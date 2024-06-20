@@ -5,28 +5,55 @@
     export let onTratamientoAdded;
   
     async function addTratamiento(event) {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
-      const paciente = get(selectedPaciente);
-  
-      data.paciente_id = paciente.sf_id;
-      data.sf_id = paciente.sf_id;
-  
-      await fetch('http://localhost:5000/tratamiento', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-  
-      const res = await fetch(`http://localhost:5000/tratamientos/${paciente.id}`);
-      const updatedTratamientos = await res.json();
-      tratamientos.set(updatedTratamientos);
-      event.target.reset();
-  
-      if (onTratamientoAdded) {
-        onTratamientoAdded();
-      }
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        const paciente = get(selectedPaciente);
+
+        //console.log("Paciente:", paciente);  
+
+        if (!paciente || !paciente.id) {
+            alert("Paciente no seleccionado o ID no encontrado");
+            return;
+        }
+       // console.log("Datos antes de enviar:", data);
+        data.paciente_id = paciente.id;
+
+        //console.log("Datos a enviar:", data); 
+
+        try {
+            const response = await fetch('http://localhost:5000/tratamiento', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+              //  console.error('Error:', errorData);
+                alert('Error al crear tratamiento: ' + errorData.error);
+                return;
+            }
+
+            const res = await fetch(`http://localhost:5000/tratamientos/${paciente.id}`);
+            if (!res.ok) {
+                const errorData = await res.json();
+               // console.error('Error:', errorData);
+                alert('Error al obtener tratamientos: ' + errorData.error);
+                return;
+            }
+
+            const updatedTratamientos = await res.json();
+            tratamientos.set(updatedTratamientos);
+            event.target.reset();
+
+            if (onTratamientoAdded) {
+                onTratamientoAdded();
+            }
+        } catch (error) {
+         //   console.error('Error:', error);
+            alert('Error de red');
+        }
     }
   </script>
   
