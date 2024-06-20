@@ -34,11 +34,11 @@
   
     onMount(async () => {
       const id = get(selectedPaciente);
-      const resPaciente = await fetch(`http://localhost:5000/paciente/${id}`);
+      const resPaciente = await fetch(`https://demo-rdcom.vercel.app/paciente/${id}`);
       const pacienteData = await resPaciente.json();
       paciente.set(pacienteData);
   
-      const resTratamientos = await fetch(`http://localhost:5000/tratamientos/${id}`);
+      const resTratamientos = await fetch(`https://demo-rdcom.vercel.app/tratamientos/${id}`);
       const tratamientosData = await resTratamientos.json();
       tratamientos.set(tratamientosData);
     });
@@ -52,13 +52,13 @@
       data.paciente_id = pacienteData.sf_id;
       data.sf_id = pacienteData.sf_id;
   
-      await fetch('http://localhost:5000/tratamiento', {
+      await fetch('https://demo-rdcom.vercel.app/tratamiento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
   
-      const res = await fetch(`http://localhost:5000/tratamientos/${pacienteData.id}`);
+      const res = await fetch(`https://demo-rdcom.vercel.app/tratamientos/${pacienteData.id}`);
       const updatedTratamientos = await res.json();
       tratamientos.set(updatedTratamientos);
       event.target.reset();

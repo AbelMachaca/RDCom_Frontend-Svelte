@@ -11,7 +11,7 @@
   
     async function drawChart() {
       const paciente = $selectedPaciente;
-      const res = await fetch(`http://localhost:5000/tratamientos/${paciente.id}`);
+      const res = await fetch(`https://demo-rdcom.vercel.app/tratamientos/${paciente.id}`);
       const tratamientosData = await res.json();
   
       const nombresTratamientos = tratamientosData.map(tratamiento => tratamiento.nombre);

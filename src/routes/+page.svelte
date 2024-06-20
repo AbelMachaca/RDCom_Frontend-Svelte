@@ -229,7 +229,9 @@
   
 
   onMount(async () => {
-    const res = await fetch('http://localhost:5000/pacientes');
+
+    
+    const res = await fetch('https://demo-rdcom.vercel.app/pacientes');
     const data = await res.json();
     pacientes.set(data);
   });

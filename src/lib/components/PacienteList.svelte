@@ -2,11 +2,11 @@
     import { pacientes, selectedPaciente, tratamientos } from '../stores';
   
     async function selectPaciente(id) {
-      const resPaciente = await fetch(`http://localhost:5000/paciente/${id}`);
+      const resPaciente = await fetch(`https://demo-rdcom.vercel.app/paciente/${id}`);
       const pacienteData = await resPaciente.json();
       selectedPaciente.set(pacienteData);
   
-      const resTratamientos = await fetch(`http://localhost:5000/tratamientos/${id}`);
+      const resTratamientos = await fetch(`https://demo-rdcom.vercel.app/tratamientos/${id}`);
       const tratamientosData = await resTratamientos.json();
       tratamientos.set(tratamientosData);
     }

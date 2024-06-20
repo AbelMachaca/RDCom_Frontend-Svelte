@@ -22,7 +22,7 @@
         //console.log("Datos a enviar:", data); 
 
         try {
-            const response = await fetch('http://localhost:5000/tratamiento', {
+            const response = await fetch('https://demo-rdcom.vercel.app/tratamiento', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -35,7 +35,7 @@
                 return;
             }
 
-            const res = await fetch(`http://localhost:5000/tratamientos/${paciente.id}`);
+            const res = await fetch(`https://demo-rdcom.vercel.app/tratamientos/${paciente.id}`);
             if (!res.ok) {
                 const errorData = await res.json();
                // console.error('Error:', errorData);

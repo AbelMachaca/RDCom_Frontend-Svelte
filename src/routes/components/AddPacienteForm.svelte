@@ -40,13 +40,13 @@
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
   
-      await fetch('http://localhost:5000/paciente', {
+      await fetch('https://demo-rdcom.vercel.app/paciente', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
   
-      const res = await fetch('http://localhost:5000/pacientes');
+      const res = await fetch('https://demo-rdcom.vercel.app/pacientes');
       const updatedData = await res.json();
       pacientes.set(updatedData);
       event.target.reset();
