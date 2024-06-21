@@ -225,15 +225,22 @@
 /*   import TratamientoForm from '../lib/components/TratamientoForm.svelte';
   import TratamientosChart from '../lib/components/TratamientosChart.svelte'; */
   import Sidebar from '../lib/components/Sidebar.svelte';
+  import Spinner from '../lib/components/Spinner.svelte';
+
+  let loading = true;
 
   
 
   onMount(async () => {
-
-    
-    const res = await fetch('https://demo-rdcom.vercel.app/pacientes');
-    const data = await res.json();
-    pacientes.set(data);
+    try {
+      const res = await fetch('https://demo-rdcom.vercel.app/pacientes');
+      const data = await res.json();
+      pacientes.set(data);
+    } catch (error) {
+      console.error('Error fetching pacientes:', error);
+    } finally {
+      loading = false;
+    }
   });
 </script>
 
@@ -244,7 +251,9 @@
   <div style="width: 100%;">
     <div class="asd">
     <main class="container mt-5">
-
+      {#if loading}
+          <Spinner />
+        {:else}
 
       <div class="detalle card mt-4">
       <div class="card-header pt-4">
@@ -260,7 +269,7 @@
       </div>
       <PacienteDetails />
     </div>
-
+    {/if}
       <!-- <div class="card mt-4">
         <div class="card-header">
           <h5>Tratamientos</h5>
