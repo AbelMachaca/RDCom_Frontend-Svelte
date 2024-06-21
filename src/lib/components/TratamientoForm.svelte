@@ -3,9 +3,17 @@
     import { get } from 'svelte/store';
   
     export let onTratamientoAdded;
-  
+
+    let isSubmitting = false;
+
     async function addTratamiento(event) {
         event.preventDefault();
+
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+
+
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
         const paciente = get(selectedPaciente);
@@ -14,6 +22,7 @@
 
         if (!paciente || !paciente.id) {
             alert("Paciente no seleccionado o ID no encontrado");
+            isSubmitting = false;
             return;
         }
        // console.log("Datos antes de enviar:", data);
@@ -32,6 +41,7 @@
                 const errorData = await response.json();
               //  console.error('Error:', errorData);
                 alert('Error al crear tratamiento: ' + errorData.error);
+                isSubmitting = false;
                 return;
             }
 
@@ -40,6 +50,7 @@
                 const errorData = await res.json();
                // console.error('Error:', errorData);
                 alert('Error al obtener tratamientos: ' + errorData.error);
+                isSubmitting = false;
                 return;
             }
 
@@ -53,6 +64,8 @@
         } catch (error) {
          //   console.error('Error:', error);
             alert('Error de red');
+        } finally {
+            isSubmitting = false;
         }
     }
   </script>
@@ -70,7 +83,7 @@
     <div class="form-group mr-2">
       <input class="form-control" type="date" name="fecha_fin" required>
     </div>
-    <button class="btn btn-primary" type="submit"><i class="fas fa-plus"></i> Añadir Tratamiento</button>
+    <button class="btn btn-primary" type="submit" disabled={isSubmitting}><i class="fas fa-plus"></i> Añadir Tratamiento</button>
   </form>
   
 <style>

@@ -1,8 +1,16 @@
 <script>
     import { pacientes } from '../stores';
-  
+
+
+    let isSubmitting = false;
+
     async function addPaciente(event) {
       event.preventDefault();
+
+      if (isSubmitting) return;
+
+      isSubmitting = true;
+
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
   
@@ -16,6 +24,7 @@
       const updatedData = await res.json();
       pacientes.set(updatedData);
       event.target.reset();
+      isSubmitting = false;
     }
   </script>
   
@@ -29,7 +38,7 @@
     <div class="form-group mr-2">
       <input class="form-control" type="text" name="enfermedad" placeholder="Enfermedad" required>
     </div>
-    <button class="btn btn-primary" type="submit"><i class="fas fa-plus"></i> Añadir Paciente</button>
+    <button class="btn btn-primary" type="submit" disabled={isSubmitting}><i class="fas fa-plus"></i> Añadir Paciente</button>
   </form>
 
 
